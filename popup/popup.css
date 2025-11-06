@@ -1,0 +1,82 @@
+/* NeuraPath Popup Styles */
+/* Dark theme with professional, clean look */
+
+body {
+  width: 300px;
+  min-height: 200px;
+  margin: 0;
+  padding: 20px;
+  background-color: #0a192f;
+  color: #ccd6f6;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+h1 {
+  margin: 0 0 20px 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #ccd6f6;
+}
+
+#timer-display {
+  margin-bottom: 15px;
+  padding: 10px 20px;
+  background-color: rgba(100, 255, 218, 0.1);
+  border-radius: 8px;
+  border: 2px solid #64ffda;
+}
+
+#timer {
+  font-size: 32px;
+  font-weight: 700;
+  color: #64ffda;
+  font-family: 'Courier New', monospace;
+}
+
+#session-btn,
+#end-session-btn {
+  background-color: #64ffda;
+  color: #0a192f;
+  border: none;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 200px;
+}
+
+#end-session-btn {
+  background-color: #ff6b6b;
+  color: #ffffff;
+  margin-top: 10px;
+}
+
+#session-btn:hover,
+#end-session-btn:hover {
+  background-color: #52e5c2;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(100, 255, 218, 0.3);
+}
+
+#end-session-btn:hover {
+  background-color: #ff5252;
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.3);
+}
+
+#session-btn:active,
+#end-session-btn:active {
+  transform: translateY(0);
+}
+
+#session-btn:disabled,
+#end-session-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}

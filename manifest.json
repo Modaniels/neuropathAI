@@ -1,0 +1,14 @@
+{
+  "manifest_version": 2,
+  "name": "NeuraPath (Dev)",
+  "version": "0.1.0",
+  "description": "Initial test for NeuraPath.",
+  "permissions": ["storage", "tabs"],
+  "background": {
+    "scripts": ["utils/categorizer.js", "utils/api.js", "background.js"]
+  },
+  "browser_action": {
+    "default_icon": "icons/mental-state.png",
+    "default_popup": "popup/popup.html"
+  }
+}

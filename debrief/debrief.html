@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuraPath - Session Debrief</title>
+  <link rel="stylesheet" href="debrief.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🧠 NeuraPath Session Debrief</h1>
+      <p class="subtitle">Your productivity insights</p>
+    </header>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading your session data...</p>
+    </div>
+
+    <div id="report" class="report" style="display: none;">
+      <!-- Session Overview -->
+      <section class="card">
+        <h2>📊 Session Overview</h2>
+        <div class="stats-grid">
+          <div class="stat-box">
+            <div class="stat-label">Duration</div>
+            <div class="stat-value" id="duration">--</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Total Visits</div>
+            <div class="stat-value" id="total-visits">--</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Focus Switches</div>
+            <div class="stat-value" id="focus-switches">--</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-label">Session Time</div>
+            <div class="stat-value small-text" id="session-time">--</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Productivity Breakdown -->
+      <section class="card">
+        <h2>🎯 Productivity Breakdown</h2>
+        <div class="productivity-bars">
+          <div class="bar-container">
+            <div class="bar-label">
+              <span>✅ Productive</span>
+              <span id="productive-percent" class="percentage">--</span>
+            </div>
+            <div class="bar-track">
+              <div id="productive-bar" class="bar productive" style="width: 0%"></div>
+            </div>
+            <div class="bar-count" id="productive-count">0 visits</div>
+          </div>
+
+          <div class="bar-container">
+            <div class="bar-label">
+              <span>⚠️ Distracting</span>
+              <span id="distracting-percent" class="percentage">--</span>
+            </div>
+            <div class="bar-track">
+              <div id="distracting-bar" class="bar distracting" style="width: 0%"></div>
+            </div>
+            <div class="bar-count" id="distracting-count">0 visits</div>
+          </div>
+
+          <div class="bar-container">
+            <div class="bar-label">
+              <span>⚪ Neutral</span>
+              <span id="neutral-percent" class="percentage">--</span>
+            </div>
+            <div class="bar-track">
+              <div id="neutral-bar" class="bar neutral" style="width: 0%"></div>
+            </div>
+            <div class="bar-count" id="neutral-count">0 visits</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Top Domains -->
+      <section class="card">
+        <h2>🌐 Top Visited Domains</h2>
+        <div id="top-domains" class="domain-list">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Insights & Recommendations -->
+      <section class="card insights">
+        <h2>💡 AI Coach Insight</h2>
+        <div id="ai-insight-loading" class="ai-loading" style="display: none;">
+          <div class="ai-spinner"></div>
+          <p>Analyzing your session with AI...</p>
+        </div>
+        <div id="ai-insight" class="ai-insight-content">
+          <!-- Populated by JavaScript -->
+        </div>
+        <div class="ai-badge" id="ai-badge" style="display: none;">
+          <span class="badge-icon">🤖</span>
+          <span class="badge-text">AI-Generated Insight</span>
+        </div>
+      </section>
+
+      <!-- Additional Insights -->
+      <section class="card insights">
+        <h2>💡 Additional Insights</h2>
+        <div id="insights" class="insights-content">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Session Details -->
+      <section class="card session-details">
+        <h3>Session Details</h3>
+        <p class="detail-text">
+          <strong>Session ID:</strong> <span id="session-id">--</span><br>
+          <strong>Started:</strong> <span id="start-time">--</span><br>
+          <strong>Ended:</strong> <span id="end-time">--</span>
+        </p>
+      </section>
+    </div>
+
+    <div id="error" class="error" style="display: none;">
+      <p>⚠️ Unable to load session data. Please try again.</p>
+    </div>
+  </div>
+
+  <script src="debrief.js"></script>
+</body>
+</html>

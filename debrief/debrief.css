@@ -1,0 +1,362 @@
+/* NeuraPath Debrief Report Styles */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #0a192f 0%, #112240 100%);
+  color: #ccd6f6;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Header */
+header {
+  text-align: center;
+  margin-bottom: 40px;
+  padding: 30px 0;
+}
+
+header h1 {
+  font-size: 36px;
+  color: #64ffda;
+  margin-bottom: 10px;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: #8892b0;
+}
+
+/* Loading State */
+.loading {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(100, 255, 218, 0.3);
+  border-top-color: #64ffda;
+  border-radius: 50%;
+  margin: 0 auto 20px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Cards */
+.card {
+  background: rgba(17, 34, 64, 0.8);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.card h2 {
+  font-size: 24px;
+  color: #64ffda;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card h3 {
+  font-size: 18px;
+  color: #8892b0;
+  margin-bottom: 15px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.stat-box {
+  background: rgba(100, 255, 218, 0.05);
+  border: 1px solid rgba(100, 255, 218, 0.2);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #8892b0;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #64ffda;
+}
+
+.stat-value.small-text {
+  font-size: 16px;
+}
+
+/* Productivity Bars */
+.productivity-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  color: #ccd6f6;
+}
+
+.percentage {
+  font-weight: 700;
+  color: #64ffda;
+}
+
+.bar-track {
+  height: 30px;
+  background: rgba(100, 255, 218, 0.1);
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+}
+
+.bar {
+  height: 100%;
+  transition: width 1s ease-out;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.bar.productive {
+  background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+}
+
+.bar.distracting {
+  background: linear-gradient(90deg, #ef4444 0%, #f87171 100%);
+}
+
+.bar.neutral {
+  background: linear-gradient(90deg, #6b7280 0%, #9ca3af 100%);
+}
+
+.bar-count {
+  font-size: 14px;
+  color: #8892b0;
+  margin-left: 10px;
+}
+
+/* Domain List */
+.domain-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.domain-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  background: rgba(100, 255, 218, 0.05);
+  border: 1px solid rgba(100, 255, 218, 0.1);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.domain-item:hover {
+  background: rgba(100, 255, 218, 0.1);
+  border-color: rgba(100, 255, 218, 0.3);
+}
+
+.domain-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.domain-rank {
+  font-size: 18px;
+  font-weight: 700;
+  color: #8892b0;
+  min-width: 30px;
+}
+
+.domain-name {
+  font-size: 16px;
+  color: #ccd6f6;
+}
+
+.domain-count {
+  font-size: 14px;
+  font-weight: 600;
+  color: #64ffda;
+  background: rgba(100, 255, 218, 0.1);
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+/* Insights */
+.insights-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.insight-item {
+  padding: 16px;
+  background: rgba(100, 255, 218, 0.05);
+  border-left: 4px solid #64ffda;
+  border-radius: 4px;
+  line-height: 1.6;
+}
+
+.insight-item.warning {
+  border-left-color: #fbbf24;
+  background: rgba(251, 191, 36, 0.05);
+}
+
+.insight-item.success {
+  border-left-color: #10b981;
+  background: rgba(16, 185, 129, 0.05);
+}
+
+/* AI Insight */
+.ai-insight-content {
+  font-size: 16px;
+  line-height: 1.8;
+  color: #ccd6f6;
+  padding: 20px;
+  background: rgba(100, 255, 218, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(100, 255, 218, 0.2);
+}
+
+.ai-insight-content p {
+  margin-bottom: 12px;
+}
+
+.ai-insight-content p:last-child {
+  margin-bottom: 0;
+}
+
+.ai-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+  gap: 16px;
+}
+
+.ai-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(100, 255, 218, 0.3);
+  border-top-color: #64ffda;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.ai-loading p {
+  color: #64ffda;
+  font-size: 14px;
+}
+
+.ai-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 8px 12px;
+  background: rgba(100, 255, 218, 0.1);
+  border-radius: 20px;
+  width: fit-content;
+  font-size: 13px;
+  color: #64ffda;
+}
+
+.badge-icon {
+  font-size: 16px;
+}
+
+.badge-text {
+  font-weight: 600;
+}
+
+/* Session Details */
+.session-details {
+  background: rgba(17, 34, 64, 0.5);
+  border-color: rgba(100, 255, 218, 0.1);
+}
+
+.detail-text {
+  line-height: 1.8;
+  color: #8892b0;
+}
+
+.detail-text strong {
+  color: #ccd6f6;
+}
+
+.detail-text span {
+  color: #64ffda;
+}
+
+/* Error State */
+.error {
+  text-align: center;
+  padding: 60px 20px;
+  color: #f87171;
+  font-size: 18px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  header h1 {
+    font-size: 28px;
+  }
+
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .stat-value {
+    font-size: 24px;
+  }
+}
