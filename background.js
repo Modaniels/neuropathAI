@@ -24,6 +24,11 @@ function onTabUpdated(tabId, changeInfo, tab) {
         title: tab.title || 'Unknown',
         timestamp: new Date().toISOString()
       });
+      
+      // Show floating widget on newly loaded tabs
+      browser.tabs.sendMessage(tabId, { command: 'show-floating-widget' }).catch(err => {
+        // Ignore errors for special tabs
+      });
     }
   }
 }
@@ -83,6 +88,16 @@ async function processAndSaveSession() {
   const focusSwitches = calculateFocusSwitches(visitedUrls);
   const topDomains = getTopDomains(analysis.domainCounts);
   
+  // Generate focus analysis report (Phase 4)
+  const focusReport = typeof generateContextSwitchReport === 'function'
+    ? generateContextSwitchReport(visitedUrls.map(entry => ({
+        url: entry.url,
+        domain: extractDomain(entry.url),
+        category: categorizeUrl(entry.url),
+        timestamp: entry.timestamp
+      })), durationMinutes)
+    : null;
+  
   // Calculate productivity metrics
   const totalVisits = analysis.totals.total;
   const productivePercentage = totalVisits > 0 
@@ -118,6 +133,8 @@ async function processAndSaveSession() {
       category: categorizeUrl(entry.url),
       timestamp: entry.timestamp
     })),
+    // Phase 4: Focus analysis data
+    focusAnalysis: focusReport,
     aiInsight: null, // Will be populated by Smart Dispatcher
     isAiGenerated: false
   };
@@ -161,8 +178,8 @@ async function processAndSaveSession() {
     // Also save latest session separately for quick access
     await browser.storage.local.set({ latestSession: sessionSummary });
     
-    // Open debrief page to show the report
-    browser.tabs.create({ url: browser.runtime.getURL('debrief/debrief.html') });
+    // Open rating page first (then user goes to debrief)
+    browser.tabs.create({ url: browser.runtime.getURL('rating/rating.html') });
     
   } catch (error) {
     console.error('❌ Error saving session data:', error);
@@ -170,37 +187,115 @@ async function processAndSaveSession() {
 }
 
 /**
- * Smart Dispatcher: Decides whether to use local insight or call AI
+ * Phase 6: Enhanced Smart Dispatcher with Historical Context
+ * Decides whether to use local insight or call AI, now with historical awareness
  * @param {Object} sessionSummary - The session data to analyze
  */
 async function runSmartDispatcher(sessionSummary) {
-  console.log('🧠 Running Smart Dispatcher...');
+  console.log('🧠 Running Enhanced Smart Dispatcher (Phase 6)...');
   
   const { duration, metrics } = sessionSummary;
   
-  // Dispatcher Rules
+  // Get recent sessions for historical context
+  const recentSessions = await getRecentRatedSessions(5);
+  
+  // Dispatcher Rules - Base conditions
   const isShortSession = duration.minutes < 10;
   const isSimpleSession = metrics.totalVisits < 5;
   const isLowActivity = metrics.focusSwitches < 3;
   const isVeryProductive = metrics.productivePercentage >= 80;
   const isVeryDistracting = metrics.distractingPercentage >= 70;
   
-  // Determine if session is "interesting" enough for AI
-  const isInterestingSession = !isShortSession && 
-                               !isSimpleSession && 
-                               (metrics.focusSwitches >= 5 || 
-                                (metrics.distractingVisits > 0 && metrics.productiveVisits > 0));
+  // Phase 6: Enhanced rules with historical pattern detection
+  const hasHistoricalContext = recentSessions.length >= 3;
+  let isSignificantChange = false;
+  let isMilestoneSession = false;
   
-  if (isInterestingSession) {
-    // Call AI for interesting sessions
-    console.log('📊 Interesting session detected - calling Gemini API...');
-    sessionSummary.aiInsight = await fetchGeminiInsight(sessionSummary);
+  if (hasHistoricalContext) {
+    // Calculate historical averages
+    const avgHistoricalProductivity = recentSessions.reduce((sum, s) => 
+      sum + s.metrics.productivePercentage, 0) / recentSessions.length;
+    const avgHistoricalRating = recentSessions.reduce((sum, s) => 
+      sum + s.userRating.stars, 0) / recentSessions.length;
+    
+    // Detect significant changes (>20% difference from historical avg)
+    const productivityChange = Math.abs(metrics.productivePercentage - avgHistoricalProductivity);
+    isSignificantChange = productivityChange > 20;
+    
+    // Detect milestone sessions
+    const totalSessions = await getSessionCount();
+    isMilestoneSession = (totalSessions % 10 === 0 && totalSessions > 0); // Every 10th session
+  }
+  
+  // Determine if session is "interesting" enough for AI
+  const isComplexSession = !isShortSession && 
+                           !isSimpleSession && 
+                           (metrics.focusSwitches >= 5 || 
+                            (metrics.distractingVisits > 0 && metrics.productiveVisits > 0));
+  
+  // Phase 6: Trigger AI for complex sessions, pattern changes, or milestones
+  const shouldUseAI = isComplexSession || isSignificantChange || isMilestoneSession;
+  
+  if (shouldUseAI) {
+    // Call AI with historical context
+    if (hasHistoricalContext) {
+      console.log('📊 Calling Gemini API with historical context (last 5 sessions)...');
+      sessionSummary.aiInsight = await fetchGeminiInsight(sessionSummary, recentSessions);
+    } else {
+      console.log('📊 Calling Gemini API (no historical context yet)...');
+      sessionSummary.aiInsight = await fetchGeminiInsight(sessionSummary);
+    }
     sessionSummary.isAiGenerated = true;
+    
+    if (isSignificantChange) {
+      console.log('🔄 Significant pattern change detected - AI providing context');
+    }
+    if (isMilestoneSession) {
+      console.log('🎯 Milestone session - AI celebrating progress');
+    }
   } else {
     // Use local insight for simple sessions
     console.log('📝 Simple session - using local insight');
     sessionSummary.aiInsight = generateLocalInsight(sessionSummary);
     sessionSummary.isAiGenerated = false;
+  }
+}
+
+/**
+ * Phase 6: Get recent rated sessions for historical context
+ * @param {number} limit - Maximum number of sessions to return
+ * @returns {Promise<Array>} - Array of recent rated sessions
+ */
+async function getRecentRatedSessions(limit = 5) {
+  try {
+    const result = await browser.storage.local.get(['sessions']);
+    const allSessions = result.sessions || [];
+    
+    // Filter for rated sessions only, sorted by timestamp (newest first)
+    const ratedSessions = allSessions
+      .filter(s => s.userRating && s.userRating.stars && !s.userRating.skipped)
+      .sort((a, b) => new Date(b.startTime) - new Date(a.startTime))
+      .slice(0, limit);
+    
+    return ratedSessions;
+  } catch (error) {
+    console.error('Error fetching recent sessions:', error);
+    return [];
+  }
+}
+
+/**
+ * Phase 6: Get total session count
+ * @returns {Promise<number>} - Total number of sessions
+ */
+async function getSessionCount() {
+  try {
+    const result = await browser.storage.local.get(['sessions']);
+    const allSessions = result.sessions || [];
+    return allSessions.length;
+  } catch (error) {
+    console.error('Error getting session count:', error);
+    return 0;
   }
 }
 
@@ -259,6 +354,15 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     sessionStartTime = Date.now();
     startTracking();
     
+    // Show floating widget on all tabs
+    browser.tabs.query({}).then(tabs => {
+      tabs.forEach(tab => {
+        browser.tabs.sendMessage(tab.id, { command: 'show-floating-widget' }).catch(err => {
+          // Ignore errors for tabs that can't receive messages (like about:, moz-extension:, etc.)
+        });
+      });
+    });
+    
     // Send response back to popup to confirm session started
     sendResponse({ success: true });
   }
@@ -272,6 +376,15 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
       const elapsed = Math.floor((Date.now() - sessionStartTime) / 1000);
       console.log(`Session ended. Duration: ${elapsed} seconds`);
     }
+    
+    // Hide floating widget on all tabs
+    browser.tabs.query({}).then(tabs => {
+      tabs.forEach(tab => {
+        browser.tabs.sendMessage(tab.id, { command: 'hide-floating-widget' }).catch(err => {
+          // Ignore errors
+        });
+      });
+    });
     
     stopTracking();
     sessionActive = false;
@@ -296,6 +409,61 @@ browser.runtime.onMessage.addListener((message, sender, sendResponse) => {
     }
     
     sendResponse({ elapsed: elapsed });
+  }
+  
+  // Phase 6: Handle weekly AI summary request
+  else if (message.command === "generate-weekly-summary") {
+    console.log("📅 Weekly AI summary requested...");
+    
+    (async () => {
+      try {
+        // Get sessions from the last 7 days
+        const result = await browser.storage.local.get(['sessions']);
+        const allSessions = result.sessions || [];
+        
+        const now = Date.now();
+        const sevenDaysAgo = now - (7 * 24 * 60 * 60 * 1000);
+        
+        const weeklySessions = allSessions.filter(session => {
+          const sessionTime = new Date(session.startTime).getTime();
+          return sessionTime >= sevenDaysAgo && sessionTime <= now;
+        });
+        
+        console.log(`Found ${weeklySessions.length} sessions in the last 7 days`);
+        
+        if (weeklySessions.length === 0) {
+          sendResponse({ 
+            success: false, 
+            error: 'No sessions found in the last 7 days' 
+          });
+          return;
+        }
+        
+        // Generate AI summary
+        const summary = await generateWeeklyAISummary(weeklySessions);
+        
+        if (summary) {
+          sendResponse({ 
+            success: true, 
+            summary: summary,
+            sessionCount: weeklySessions.length
+          });
+        } else {
+          sendResponse({ 
+            success: false, 
+            error: 'Need at least 3 rated sessions for weekly summary' 
+          });
+        }
+      } catch (error) {
+        console.error('Error generating weekly summary:', error);
+        sendResponse({ 
+          success: false, 
+          error: error.message 
+        });
+      }
+    })();
+    
+    return true; // Async response
   }
   
   // Return true to indicate we will send a response asynchronously

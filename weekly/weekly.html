@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuraPath - Weekly Summary</title>
+  <link rel="stylesheet" href="weekly.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="../icons/neuropathlogonobg.png" alt="NeuraPath Logo" class="header-logo">
+      <h1>📊 Weekly Summary</h1>
+      <p class="subtitle">Your learning patterns over the past 7 days</p>
+      <div class="date-range" id="date-range">Loading...</div>
+      <div style="margin-top: 1rem;">
+        <a href="../insights/insights.html" class="insights-link">📊 View Activity Impact Analysis</a>
+      </div>
+    </header>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Analyzing your sessions...</p>
+    </div>
+
+    <div id="content" class="content" style="display: none;">
+      <!-- Overview Stats -->
+      <section class="card stats-overview">
+        <h2>📈 This Week at a Glance</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📚</div>
+            <div class="stat-value" id="total-sessions">0</div>
+            <div class="stat-label">Total Sessions</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⏱️</div>
+            <div class="stat-value" id="total-time">0h</div>
+            <div class="stat-label">Study Time</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">⭐</div>
+            <div class="stat-value" id="avg-rating">-</div>
+            <div class="stat-label">Avg Rating</div>
+          </div>
+          <div class="stat-card trend-card" id="trend-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-value" id="trend-value">-</div>
+            <div class="stat-label">Trend</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Phase 6: AI Weekly Summary -->
+      <section class="card ai-summary-card" id="ai-summary-section" style="display: none;">
+        <h2>🤖 Your Weekly AI Coach Summary</h2>
+        <p class="ai-summary-subtitle">Personalized insights from analyzing your entire week</p>
+        
+        <div id="ai-summary-loading" class="ai-loading" style="display: none;">
+          <div class="spinner"></div>
+          <p>Analyzing your week with AI...</p>
+        </div>
+        
+        <div id="ai-summary-content" class="ai-summary-content">
+          <!-- Populated by JS -->
+        </div>
+        
+        <button id="generate-summary-btn" class="btn btn-ai">
+          ✨ Generate AI Weekly Summary
+        </button>
+        
+        <div class="ai-summary-info">
+          <small>💡 Requires at least 3 rated sessions. Uses historical context for personalized coaching.</small>
+        </div>
+      </section>
+
+      <!-- Trend Analysis -->
+      <section class="card" id="trend-section">
+        <h2>📊 Performance Trend</h2>
+        <div class="trend-content" id="trend-content">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Time of Day Patterns -->
+      <section class="card" id="time-patterns-section" style="display: none;">
+        <h2>⏰ Your Peak Focus Times</h2>
+        <div id="time-patterns-content">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Best Patterns -->
+      <section class="card success-card" id="best-patterns-section" style="display: none;">
+        <h2>✨ What's Working For You</h2>
+        <div id="best-patterns-content">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Areas for Improvement -->
+      <section class="card warning-card" id="weak-patterns-section" style="display: none;">
+        <h2>🎯 Areas to Improve</h2>
+        <div id="weak-patterns-content">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Key Insights -->
+      <section class="card insights-card">
+        <h2>💡 Key Insights</h2>
+        <div id="correlations-content">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Personalized Recommendations -->
+      <section class="card recommendations-card">
+        <h2>🎯 Your Action Plan</h2>
+        <div id="recommendations-content">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Session List -->
+      <section class="card">
+        <h2>📋 All Sessions This Week</h2>
+        <div id="sessions-list" class="sessions-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- No Data State -->
+      <section class="card no-data" id="no-data" style="display: none;">
+        <div class="no-data-content">
+          <div class="no-data-icon">📭</div>
+          <h3>Not Enough Data Yet</h3>
+          <p>Complete a few more rated sessions to unlock weekly insights and personalized recommendations.</p>
+          <button onclick="window.close()" class="btn">Start a Session</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="../utils/pattern-analyzer.js"></script>
+  <script src="weekly.js"></script>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NeuraPath - Rate Your Session</title>
+  <link rel="stylesheet" href="rating.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="../icons/neuropathlogonobg.png" alt="NeuraPath Logo" class="header-logo">
+      <h1>🎯 How Was Your Session?</h1>
+      <p class="subtitle">Your feedback helps NeuraPath learn what works for you</p>
+    </header>
+
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Loading session data...</p>
+    </div>
+
+    <div id="rating-form" class="rating-form" style="display: none;">
+      <!-- Session Summary -->
+      <section class="session-summary">
+        <h2>Session Summary</h2>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="summary-icon">⏱️</span>
+            <div>
+              <div class="summary-label">Duration</div>
+              <div class="summary-value" id="duration">--</div>
+            </div>
+          </div>
+          <div class="summary-item">
+            <span class="summary-icon">🔄</span>
+            <div>
+              <div class="summary-label">Focus Switches</div>
+              <div class="summary-value" id="focus-switches">--</div>
+            </div>
+          </div>
+          <div class="summary-item">
+            <span class="summary-icon">📊</span>
+            <div>
+              <div class="summary-label">Productive Time</div>
+              <div class="summary-value" id="productive-percent">--%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Star Rating -->
+      <section class="rating-section">
+        <h2>Rate Your Productivity</h2>
+        <p class="rating-description">How productive did this session feel?</p>
+        <div class="stars">
+          <button class="star" data-rating="1" aria-label="1 star">★</button>
+          <button class="star" data-rating="2" aria-label="2 stars">★</button>
+          <button class="star" data-rating="3" aria-label="3 stars">★</button>
+          <button class="star" data-rating="4" aria-label="4 stars">★</button>
+          <button class="star" data-rating="5" aria-label="5 stars">★</button>
+        </div>
+        <div class="rating-labels">
+          <span>Not Productive</span>
+          <span>Very Productive</span>
+        </div>
+        <div id="rating-feedback" class="rating-feedback"></div>
+      </section>
+
+      <!-- Quick Tags -->
+      <section class="tags-section">
+        <h2>Quick Tags (Optional)</h2>
+        <p class="tags-description">Select what best describes this session</p>
+        <div class="tags">
+          <button class="tag" data-tag="Very Focused">🎯 Very Focused</button>
+          <button class="tag" data-tag="Distracted">😵 Distracted</button>
+          <button class="tag" data-tag="Productive">✅ Productive</button>
+          <button class="tag" data-tag="Wasted Time">⏰ Wasted Time</button>
+          <button class="tag" data-tag="Deep Work">🧠 Deep Work</button>
+          <button class="tag" data-tag="Research">📚 Research</button>
+          <button class="tag" data-tag="Learning">💡 Learning</button>
+          <button class="tag" data-tag="Tired">😴 Tired</button>
+        </div>
+      </section>
+
+      <!-- Notes -->
+      <section class="notes-section">
+        <h2>Notes (Optional)</h2>
+        <p class="notes-description">Any additional thoughts about this session?</p>
+        <textarea 
+          id="session-notes" 
+          placeholder="e.g., 'Great morning session' or 'Too many distractions from notifications'"
+          rows="3"
+          maxlength="500"
+        ></textarea>
+        <div class="char-count">
+          <span id="char-count">0</span> / 500
+        </div>
+      </section>
+
+      <!-- Action Buttons -->
+      <section class="actions">
+        <button id="skip-btn" class="btn btn-secondary">Skip Rating</button>
+        <button id="submit-btn" class="btn btn-primary" disabled>
+          View Detailed Insights
+        </button>
+      </section>
+
+      <p class="privacy-note">
+        🔒 Your ratings stay private on your device and help personalize your insights
+      </p>
+    </div>
+  </div>
+
+  <script src="rating.js"></script>
+</body>
+</html>

@@ -1,14 +1,51 @@
 {
   "manifest_version": 2,
-  "name": "NeuraPath (Dev)",
-  "version": "0.1.0",
-  "description": "Initial test for NeuraPath.",
-  "permissions": ["storage", "tabs"],
-  "background": {
-    "scripts": ["utils/categorizer.js", "utils/api.js", "background.js"]
+  "name": "NeuraPath - AI Study Tracker",
+  "version": "1.1.1",
+  "description": "Privacy-first AI study habit tracker. Get personalized insights, track focus patterns, and improve productivity with intelligent analytics.",
+  "author": "Modaniels",
+  "homepage_url": "https://github.com/Modaniels/neuropathAI",
+  
+  "icons": {
+    "48": "icons/neuropathlogo.jpg",
+    "96": "icons/neuropathlogo.jpg"
   },
+  
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  
+  "background": {
+    "scripts": [
+      "utils/categorizer.js",
+      "utils/pattern-analyzer.js",
+      "utils/focus-analyzer.js",
+      "utils/activity-impact.js",
+      "utils/api.js",
+      "background.js"
+    ]
+  },
+  
   "browser_action": {
-    "default_icon": "icons/mental-state.png",
-    "default_popup": "popup/popup.html"
+    "default_icon": "icons/neuropathlogo.jpg",
+    "default_popup": "popup/popup.html",
+    "default_title": "NeuraPath - Track Your Study Session"
+  },
+  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
+  ],
+  
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "neuropath@modaniels.com",
+      "strict_min_version": "57.0"
+    }
   }
 }

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Impact Analysis - NeuraPath</title>
+  <link rel="stylesheet" href="insights.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="../icons/neuropathlogonobg.png" alt="NeuraPath Logo" class="header-logo">
+      <h1>📊 Activity Impact Analysis</h1>
+      <p class="subtitle">Which activities help (or hurt) your study sessions</p>
+    </header>
+
+    <!-- Loading State -->
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <p>Analyzing activity patterns...</p>
+    </div>
+
+    <!-- Main Content -->
+    <div id="content" style="display: none;">
+      
+      <!-- Summary Stats -->
+      <section class="card summary-card">
+        <div class="summary-grid">
+          <div class="summary-item">
+            <div class="summary-icon">📈</div>
+            <div class="summary-content">
+              <div class="summary-value" id="helpful-count">-</div>
+              <div class="summary-label">Helpful Activities</div>
+            </div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-icon">📉</div>
+            <div class="summary-content">
+              <div class="summary-value" id="harmful-count">-</div>
+              <div class="summary-label">Harmful Activities</div>
+            </div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-icon">🎯</div>
+            <div class="summary-content">
+              <div class="summary-value" id="analyzed-sessions">-</div>
+              <div class="summary-label">Sessions Analyzed</div>
+            </div>
+          </div>
+          <div class="summary-item">
+            <div class="summary-icon">🌐</div>
+            <div class="summary-content">
+              <div class="summary-value" id="total-domains">-</div>
+              <div class="summary-label">Domains Tracked</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Action Plan -->
+      <section class="card action-plan-card" id="action-plan-section" style="display: none;">
+        <h2>🎯 Your Personalized Action Plan</h2>
+        <p class="action-plan-summary" id="action-plan-summary"></p>
+        <div id="action-plan-content" class="action-plan-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Helpful Activities -->
+      <section class="card success-card" id="helpful-section" style="display: none;">
+        <h2>✨ What's Working For You</h2>
+        <p class="section-description">These activities consistently correlate with high-rated sessions. Keep it up!</p>
+        <div id="helpful-activities" class="activities-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- Harmful Activities -->
+      <section class="card warning-card" id="harmful-section" style="display: none;">
+        <h2>⚠️ What's Holding You Back</h2>
+        <p class="section-description">These activities consistently correlate with low-rated sessions. Consider limiting them.</p>
+        <div id="harmful-activities" class="activities-list">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- All Activities Table -->
+      <section class="card" id="all-activities-section" style="display: none;">
+        <h2>📋 All Tracked Activities</h2>
+        <p class="section-description">Complete breakdown of activity impact across all your sessions.</p>
+        <div id="all-activities" class="activities-table">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- No Data State -->
+      <section class="card no-data" id="no-data" style="display: none;">
+        <div class="no-data-content">
+          <div class="no-data-icon">📊</div>
+          <h3>Not Enough Data Yet</h3>
+          <p>Complete at least 5 rated sessions to unlock activity impact analysis. Rate your sessions to see which activities help or hurt your productivity!</p>
+          <button onclick="window.close()" class="btn">Start a Session</button>
+        </div>
+      </section>
+
+      <!-- Error State -->
+      <div id="error" class="error" style="display: none;">
+        <p>⚠️ Unable to load activity data. Please try again.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="../utils/activity-impact.js"></script>
+  <script src="insights.js"></script>
+</body>
+</html>

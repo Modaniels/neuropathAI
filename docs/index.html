@@ -112,6 +112,15 @@
             max-width: 800px;
         }
 
+        .hero-logo {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 8px 24px rgba(100, 255, 218, 0.4));
+            animation: fadeIn 1s ease, float 3s ease-in-out infinite;
+        }
+
         .hero h3 {
             font-size: clamp(1.2rem, 3vw, 1.5rem);
             margin-bottom: 1rem;
@@ -726,9 +735,10 @@
     <section class="hero visible">
         <div class="container">
             <div class="hero-content">
+                <img src="../icons/neuropathlogonobg.png" alt="NeuraPath Logo" class="hero-logo">
                 <h3>Your Brain Has a Pattern</h3>
                 <h1>Stop Guessing. Start Learning.</h1>
-                <p>NeuraPath is a smart Firefox extension that tracks your study habits in real-time and delivers personalized insights. Discover what truly works for your brain and transform how you learn.</p>
+                <p>NeuraPath is an AI-powered Firefox extension that tracks your study session patterns and delivers personalized insights. Discover what truly works for your brain and transform how you learn.</p>
                 <a href="#download" class="btn">Get Started Free</a>
             </div>
         </div>
@@ -740,10 +750,10 @@
             <h2>You're Working Hard, But Is It Working?</h2>
             <div class="problem-content">
                 <div class="problem-text">
-                    <p>You spend hours studying, switching between tabs, taking breaks, and pushing through distractions. But when exam time comes, the results don't match the effort. You're left wondering: What actually worked? What was just wasted time?</p>
+                    <p>You spend hours studying, switching between tabs, taking breaks, and pushing through distractions. But when exam time comes, the results don't match the effort. You're left wondering: What study patterns actually worked? What was just wasted time?</p>
                 </div>
                 <div class="problem-box">
-                    <p>I studied for 6 hours yesterday. Today, I can barely remember half of it. What am I doing wrong?</p>
+                    <p>I studied for 6 hours yesterday. Today, I can barely remember half of it. What patterns am I missing?</p>
                 </div>
                 <div class="stats-grid" style="margin-top: 3rem;">
                     <div class="stat-item">
@@ -769,10 +779,10 @@
             <h2>Get Insights That Actually Matter</h2>
             <div class="solution-container">
                 <div class="solution-text">
-                    <p>Forget complex dashboards and overwhelming analytics. NeuraPath delivers simple, powerful insights based on your actual behavior. We show you exactly what's working, what's not, and what to change.</p>
+                    <p>Forget complex dashboards and overwhelming analytics. NeuraPath uses AI to analyze your study session patterns and deliver simple, powerful insights you can actually use. We show you exactly what's working, what's not, and what to change.</p>
                     <div class="revelation-card">
-                        <h4>Your Weekly Insight</h4>
-                        <p class="insight">When you check social media mid-session, it takes an average of <span>12 minutes</span> to regain deep focus. That "quick break" costs you more than you think.</p>
+                        <h4>Your Personalized Insight</h4>
+                        <p class="insight">When you switch between distracting sites mid-session, it takes an average of <span>12 minutes</span> to regain deep focus. That "quick break" costs you more than you think.</p>
                     </div>
                 </div>
                 <div class="insight-image-container">
@@ -790,17 +800,17 @@
                 <div class="step">
                     <div class="icon">①</div>
                     <h3>Track</h3>
-                    <p>Click "Start Session" and study as usual. NeuraPath quietly observes your browsing patterns, focus time, and break habits—100% private, 0% intrusive.</p>
+                    <p>Click "Start Session" and study as usual. NeuraPath quietly tracks your study session patterns, focus time, and activity—100% private, 0% intrusive.</p>
                 </div>
                 <div class="step">
                     <div class="icon">②</div>
                     <h3>Rate</h3>
-                    <p>End your session and rate how productive it felt. Our AI learns from your feedback, connecting your habits to real outcomes over time.</p>
+                    <p>End your session and rate how productive it felt. NeuraPath learns from your feedback, connecting your study patterns to real outcomes over time.</p>
                 </div>
                 <div class="step">
                     <div class="icon">③</div>
                     <h3>Improve</h3>
-                    <p>Get weekly insights tailored to you. Learn what times you focus best, which breaks help (or hurt), and how to maximize every study session.</p>
+                    <p>Get personalized insights tailored to you. Learn what times you focus best, which activities help (or hurt), and how to maximize every study session.</p>
                 </div>
             </div>
         </div>
@@ -812,7 +822,7 @@
             <div class="cta-content">
                 <div class="cta-box">
                     <h2>Ready to Learn Smarter?</h2>
-                    <p>Join thousands of students who've stopped guessing and started learning with confidence. NeuraPath is completely free and takes 30 seconds to install.</p>
+                    <p>Join students who've stopped guessing and started learning with confidence. NeuraPath tracks your study session patterns and delivers personalized insights that actually help. Completely free and takes 30 seconds to install.</p>
                     <a href="#" class="btn">Download for Firefox — It's Free</a>
                     <p style="font-size: 0.95rem; margin-top: 1.5rem; color: var(--slate);">🔒 Your data stays on your device. Always private. Always secure.</p>
                 </div>
@@ -840,7 +850,7 @@
 
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, index) => {
-                    if (entry.isIntersecting) {
+                    if (entry.isIntersecting) {-
                         setTimeout(() => {
                             entry.target.classList.add('visible');
                         }, index * 150);

@@ -9,6 +9,7 @@
 <body>
   <div class="container">
     <header>
+      <img src="../icons/neuropathlogonobg.png" alt="NeuraPath Logo" class="header-logo">
       <h1>🧠 NeuraPath Session Debrief</h1>
       <p class="subtitle">Your productivity insights</p>
     </header>
@@ -19,6 +20,40 @@
     </div>
 
     <div id="report" class="report" style="display: none;">
+      <!-- User Rating Display -->
+      <section class="card user-rating" id="user-rating-section" style="display: none;">
+        <h2>⭐ Your Rating</h2>
+        <div class="rating-display">
+          <div class="stars-display" id="stars-display">
+            <!-- Populated by JavaScript -->
+          </div>
+          <div class="rating-meta">
+            <div class="rating-tags" id="rating-tags">
+              <!-- Populated by JavaScript -->
+            </div>
+            <div class="rating-notes" id="rating-notes">
+              <!-- Populated by JavaScript -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Historical Comparison -->
+      <section class="card" id="history-comparison" style="display: none;">
+        <h2>📈 Compared to Your History</h2>
+        <div id="comparison-content">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
+      <!-- Time of Day Insight -->
+      <section class="card" id="time-insight" style="display: none;">
+        <h2>⏰ Your Best Focus Time</h2>
+        <div id="time-insight-content" class="time-insight-content">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
       <!-- Session Overview -->
       <section class="card">
         <h2>📊 Session Overview</h2>
@@ -89,6 +124,14 @@
         </div>
       </section>
 
+      <!-- Focus Analysis (Phase 4) -->
+      <section class="card" id="focus-analysis" style="display: none;">
+        <h2>🎯 Focus & Context Switching Analysis</h2>
+        <div id="focus-analysis-content">
+          <!-- Populated by JavaScript -->
+        </div>
+      </section>
+
       <!-- Insights & Recommendations -->
       <section class="card insights">
         <h2>💡 AI Coach Insight</h2>
@@ -122,6 +165,19 @@
           <strong>Ended:</strong> <span id="end-time">--</span>
         </p>
       </section>
+
+      <!-- Quick Actions -->
+      <section class="card quick-actions">
+        <h3>Quick Actions</h3>
+        <div class="action-buttons">
+          <button onclick="window.location.href='../weekly/weekly.html'" class="action-btn">
+            📊 View Weekly Summary
+          </button>
+          <button onclick="window.close()" class="action-btn secondary">
+            ✓ Done
+          </button>
+        </div>
+      </section>
     </div>
 
     <div id="error" class="error" style="display: none;">
@@ -129,6 +185,9 @@
     </div>
   </div>
 
+  <script src="../utils/pattern-analyzer.js"></script>
+  <script src="../utils/focus-analyzer.js"></script>
   <script src="debrief.js"></script>
 </body>
 </html>
+
