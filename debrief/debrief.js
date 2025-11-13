@@ -581,5 +581,38 @@ function displayFocusAnalysis(session) {
   content.innerHTML = html;
 }
 
+// Quick Actions button handlers
+function setupQuickActions() {
+  // Weekly Summary button
+  const weeklyBtn = document.getElementById('weekly-btn');
+  if (weeklyBtn) {
+    weeklyBtn.addEventListener('click', () => {
+      window.location.href = '../weekly/weekly.html';
+    });
+  }
+
+  // Done button - try to close, or go back to popup
+  const doneBtn = document.getElementById('done-btn');
+  if (doneBtn) {
+    doneBtn.addEventListener('click', () => {
+      // Try to close the window (works if opened by extension)
+      if (window.opener) {
+        window.close();
+      } else {
+        // If can't close, redirect to popup or home
+        browser.tabs.getCurrent().then(tab => {
+          browser.tabs.remove(tab.id);
+        }).catch(() => {
+          // If browser API not available, just reload popup
+          window.location.href = '../popup/popup.html';
+        });
+      }
+    });
+  }
+}
+
 // Initialize on page load
-document.addEventListener('DOMContentLoaded', loadSessionData);
+document.addEventListener('DOMContentLoaded', () => {
+  loadSessionData();
+  setupQuickActions();
+});
