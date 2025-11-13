@@ -131,12 +131,119 @@ Unlike other productivity trackers:
 ## 🛠️ Technical Details
 
 - **Manifest Version:** 2 (Firefox standard)
-- **Minimum Firefox:** 57.0+
+- **Minimum Firefox:** 58.0+
 - **Permissions Required:**
   - `storage` - Save your session data locally
   - `tabs` - Track visited URLs during active sessions only
 - **Storage Limit:** Last 50 sessions (configurable)
 - **AI Provider:** Google Gemini 2.0 Flash (optional - works offline with local insights)
+
+## 🔨 Build Instructions
+
+### Requirements
+- **No build process required!** This extension uses vanilla JavaScript with no transpilation, minification, or bundling.
+- **Operating System:** Any (Windows, macOS, Linux)
+- **Firefox:** Version 58.0 or higher
+
+### Build Steps
+This extension is **source-ready** and requires no compilation:
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/Modaniels/neuropathAI.git
+   cd neuropathAI
+   ```
+
+2. **The source code is ready to use as-is.** No build tools needed!
+
+3. **Load in Firefox for testing:**
+   - Open Firefox
+   - Navigate to `about:debugging#/runtime/this-firefox`
+   - Click "Load Temporary Add-on..."
+   - Select the `manifest.json` file from the repository
+
+4. **Create distribution ZIP (for Mozilla Add-ons submission):**
+   
+   **On Windows (PowerShell):**
+   ```powershell
+   # Navigate to the extension directory
+   cd path\to\neuropathAI
+   
+   # Create ZIP with proper structure
+   Add-Type -Assembly System.IO.Compression.FileSystem
+   $zipPath = Join-Path (Get-Location) 'neuropath-extension.zip'
+   if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
+   $zip = [System.IO.Compression.ZipFile]::Open($zipPath, 'Create')
+   $files = @('manifest.json', 'background.js', 'content.js') + (Get-ChildItem popup,debrief,weekly,rating,insights,utils,icons -Recurse -File)
+   foreach ($file in $files) {
+       if ($file -is [string]) {
+           $filePath = Join-Path (Get-Location) $file
+           $entryName = $file.Replace('\', '/')
+       } else {
+           $filePath = $file.FullName
+           $entryName = $file.FullName.Substring((Get-Location).Path.Length + 1).Replace('\', '/')
+       }
+       [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile($zip, $filePath, $entryName, 'Optimal') | Out-Null
+   }
+   $zip.Dispose()
+   Write-Host "ZIP created: neuropath-extension.zip"
+   ```
+
+   **On Linux/macOS:**
+   ```bash
+   # Navigate to the extension directory
+   cd path/to/neuropathAI
+   
+   # Create ZIP with proper structure (excludes docs, git files, markdown files)
+   zip -r neuropath-extension.zip \
+     manifest.json \
+     background.js \
+     content.js \
+     popup/ \
+     debrief/ \
+     weekly/ \
+     rating/ \
+     insights/ \
+     utils/ \
+     icons/ \
+     -x "*.md" "*.git*" "docs/*" "*.zip"
+   ```
+
+### File Structure
+```
+neuropathAI/
+├── manifest.json          # Extension configuration
+├── background.js          # Background service worker
+├── content.js             # Floating widget content script
+├── popup/                 # Extension popup UI
+│   ├── popup.html
+│   ├── popup.css
+│   └── popup.js
+├── debrief/              # Session debrief page
+├── weekly/               # Weekly summary page
+├── rating/               # Session rating page
+├── insights/             # Activity impact analysis page
+├── utils/                # Utility modules
+│   ├── categorizer.js    # Website categorization
+│   ├── pattern-analyzer.js
+│   ├── focus-analyzer.js
+│   ├── activity-impact.js
+│   └── api.js           # AI integration
+└── icons/               # Extension icons
+```
+
+### Source Code Notes
+- **No transpilation:** All JavaScript is vanilla ES6+, directly executable by Firefox
+- **No minification:** All source code is human-readable and commented
+- **No bundling:** Files are loaded individually via manifest.json
+- **No dependencies:** Pure JavaScript with no npm packages or build tools
+- **API Key:** The Gemini API key in `utils/api.js` should be replaced with your own for production use
+
+### Verification
+To verify the extension source matches the distributed version:
+1. Extract the ZIP file
+2. Compare with the GitHub repository
+3. All files should match exactly (no generated or compiled files)
 
 ## 📞 Support & Feedback
 
