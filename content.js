@@ -1,6 +1,25 @@
 // NeuraPath Floating Widget
 // Purpose: Draggable floating button that appears during active sessions
 
+// Check if we should run on this page (exclude extension pages and docs site)
+function shouldRunOnThisPage() {
+  const url = window.location.href;
+  
+  // Don't run on extension's own pages
+  if (url.includes('moz-extension://')) {
+    return false;
+  }
+  
+  // Don't run on the docs/landing page
+  if (url.includes('modaniels.github.io/neuropathAI') || 
+      url.includes('github.io/neuropath') ||
+      url.includes('localhost') && url.includes('/docs/')) {
+    return false;
+  }
+  
+  return true;
+}
+
 let isDragging = false;
 let hasMoved = false;
 let currentX = 0;
@@ -12,6 +31,12 @@ let yOffset = 0;
 
 // Create the floating widget
 function createFloatingWidget() {
+  // Check if we should run on this page
+  if (!shouldRunOnThisPage()) {
+    console.log('[NeuraPath] Widget disabled on this page');
+    return;
+  }
+  
   // Check if widget already exists
   if (document.getElementById('neuropath-floating-widget')) {
     return;
@@ -454,6 +479,11 @@ function endSessionFromWidget() {
 
 // Listen for messages from background script
 browser.runtime.onMessage.addListener((message) => {
+  // Check if we should run on this page first
+  if (!shouldRunOnThisPage()) {
+    return;
+  }
+  
   console.log('Content script received message:', message);
   if (message.command === 'show-floating-widget') {
     console.log('Showing floating widget...');
@@ -465,13 +495,17 @@ browser.runtime.onMessage.addListener((message) => {
 });
 
 // Check if session is active on page load
-console.log('NeuraPath content script loaded');
-browser.runtime.sendMessage({ command: 'check-session' }).then(response => {
-  console.log('Session check response:', response);
-  if (response.active) {
-    console.log('Active session detected, creating widget');
-    createFloatingWidget();
-  }
-}).catch(error => {
-  console.error('Error checking session:', error);
-});
+console.log('NeuraPath content script loaded on:', window.location.href);
+if (shouldRunOnThisPage()) {
+  browser.runtime.sendMessage({ command: 'check-session' }).then(response => {
+    console.log('Session check response:', response);
+    if (response.active) {
+      console.log('Active session detected, creating widget');
+      createFloatingWidget();
+    }
+  }).catch(error => {
+    console.error('Error checking session:', error);
+  });
+} else {
+  console.log('[NeuraPath] Content script disabled on this page');
+}
