@@ -29,7 +29,7 @@
   },
   
   "browser_action": {
-    "default_icon": "icons/neuropathlogo.jpg",
+    "default_icon": "icons/icon-48.png",
     "default_popup": "popup/popup.html",
     "default_title": "NeuraPath - Track Your Study Session"
   },
