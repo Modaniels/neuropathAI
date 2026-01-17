@@ -2,7 +2,7 @@
 // Purpose: Handle communication with Gemini API for AI-powered insights
 
 // Gemini API Configuration
-const GEMINI_API_KEY = 'AIzaSyD646fiIdD2Zz1r47AB-gExDC3tgU50XRA';
+const GEMINI_API_KEY = 'YOUR_API_KEY_HERE';
 const GEMINI_API_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent';
 
 /**
